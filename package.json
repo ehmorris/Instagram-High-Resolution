@@ -5,10 +5,7 @@
   "description": "",
   "dependencies": {
     "react": "^15.5.0",
-    "react-chrome-redux": "1.4.0",
-    "react-dom": "^15.5.0",
-    "react-redux": "^4.0.0",
-    "redux": "^3.0.4"
+    "react-dom": "^15.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -17,7 +14,6 @@
     "babel-preset-react": "^6.24.1",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^1.2.0",
-    "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.7",
     "rimraf": "^2.5.0",
     "webpack": "^2.6.0"

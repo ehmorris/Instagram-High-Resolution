@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from './components/app/App';
+import App from './App';
 
 const anchor = document.createElement('div');
 anchor.id = 'instagram-high-resolution-download-button';
