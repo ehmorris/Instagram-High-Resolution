@@ -1,7 +1,9 @@
-Use yarn to install the package file
+Use `yarn` to install the package file.
 
-Run with `gulp watch`
+Run with `gulp watch`.
 
-Reload the extension via Chrome when testing
+Load the build/ directory in developer mode on [chrome://extensions](chrome://extensions/).
 
-This uses a stripped version of [react-chrome-redux](https://github.com/tshaddix/react-chrome-redux). [Get started](https://github.com/tshaddix/react-chrome-redux/wiki/Getting-Started).
+Reload the extension via Chrome when testing.
+
+To generate a build, use Chrome’s “Pack Extension” button on [chrome://extensions](chrome://extensions/) and attach the private key from previous packaged versions.
