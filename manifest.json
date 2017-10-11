@@ -5,7 +5,7 @@
   "version": "0.0.0.2",
   "content_scripts": [
     {
-      "matches": ["*://*.instagram.com/p/*"],
+      "matches": ["*://*.instagram.com/*"],
       "js": ["content.js"]
     }
   ]

@@ -3,29 +3,63 @@ import React, {Component} from 'react';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.buttonContainerHeight = '28px'
 
     this.state = {
-      mainAsset: false,
-      assetObserver: false
-    };
+      mediaUrl: null,
+      mediaRect: null,
+      copyState: null
+    }
   }
 
   componentDidMount() {
-    document.body.style.transform = `translateY(${this.buttonContainerHeight})`;
+    document.addEventListener('click', ({clientX: x, clientY: y}) => {
+      const elements = this.allElementsAtPoint(x, y);
 
-    const mainAsset = this.findMainAsset();
-    const mainAssetParent = mainAsset.tag.parentNode.parentNode.parentNode;
+      const mediaElement = elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
 
-    this.setState({ mainAsset: mainAsset });
-
-    this.assetMutationUpdater().observe(mainAssetParent, { childList: true });
+      if (mediaElement) {
+        this.setState({
+          mediaUrl: this.assetUrl(mediaElement),
+          mediaRect: mediaElement.getClientRects()[0],
+          copyState: 'ready'
+        });
+        document.addEventListener('click', this.copyToClipboard.bind(this), {once: true});
+      }
+    });
   }
 
-  assetMutationUpdater() {
-    return new MutationObserver(() => {
-      this.setState({ mainAsset: this.findMainAsset() });
+  copyToClipboard() {
+    this.textInput.value = this.state.mediaUrl;
+    this.textInput.select();
+    document.execCommand('Copy');
+
+    this.setState({
+      mediaUrl: null,
+      mediaRect: null,
+      copyState: null
     });
+  }
+
+  terminateElementLoop(element, elements) {
+    return (
+      element.tagName === 'HTML' ||
+      element.tagName === 'BODY' ||
+      (elements.length > 1 && element === elements[elements.length - 1])
+    );
+  }
+
+  allElementsAtPoint(x, y) {
+    let stack = [], element;
+
+    do {
+      element = document.elementFromPoint(x, y);
+      stack.push(element);
+      element.style.pointerEvents = 'none';
+    } while (!this.terminateElementLoop(element, stack));
+
+    stack.map((stackItem) => stackItem.style.pointerEvents = 'auto');
+
+    return stack;
   }
 
   pickSourceFromSrcset(srcset, filterByConstraint) {
@@ -43,84 +77,35 @@ class App extends Component {
     }
   }
 
-  findLargeAsset(tagName) {
-    const assets = document.querySelectorAll(tagName);
-
-    if (assets) {
-      return Array.from(assets).find((asset) => asset.clientWidth > 200) || false
-    }
-
-    return false
-  }
-
-  observeMainAsset(asset) {
-    if (this.state.assetObserver) {
-      this.state.assetObserver.observe(asset, { attributes: true });
-    } else {
-      const assetObserver = this.assetMutationUpdater();
-      this.setState({ assetObserver: assetObserver });
-      assetObserver.observe(asset, { attributes: true });
-    }
-  }
-
-  findMainAsset() {
-    const mainAsset = this.findLargeAsset('video') || this.findLargeAsset('img');
-
-    if (mainAsset) {
-      const mainAssetType = mainAsset.tagName;
-      const secondaryUrl = mainAssetType === 'VIDEO' ? mainAsset.poster : false;
-
-      this.observeMainAsset(mainAsset);
-
-      return {
-        tag: mainAsset,
-        type: mainAssetType,
-        url: this.assetUrl(mainAsset),
-        secondaryUrl: secondaryUrl
-      };
-    }
-
-    return false;
-  }
-
   render() {
-    const buttonContainerStyles = {
-      background: '#3897f0',
-      border: '1px solid #3897f0',
-      display: 'block',
-      font: '600 14px/26px -apple-system, BlinkMacSystemFont, sans-serif',
-      height: this.buttonContainerHeight,
-      left: '0',
-      outline: 'none',
-      padding: '0 8px',
-      position: 'absolute',
-      textAlign: 'center',
-      top: `-${this.buttonContainerHeight}`,
-      width: '100%',
-      zIndex: '1'
-    }
-
-    const linkStyles = {
-      color: '#fff',
-      margin: '0 .5em'
-    }
-
     return (
-      <div style={buttonContainerStyles}>
-        {this.state.mainAsset &&
-          <a
-            style={linkStyles}
-            href={this.state.mainAsset.url}
-            download={this.state.mainAsset.url}
-          >Download {this.state.mainAsset.type === 'VIDEO' ? 'video' : 'image'}</a>
-        }
+      <div>
+        <input
+          style={{
+            position: 'absolute',
+            opacity: '0',
+            pointerEvents: 'none'
+          }}
+          ref={(input) => { this.textInput = input; }}
+          type="text"
+          value=""
+        />
 
-        {(this.state.mainAsset && this.state.mainAsset.secondaryUrl) &&
-          <a
-            style={linkStyles}
-            href={this.state.mainAsset.secondaryUrl}
-            download={this.state.mainAsset.secondaryUrl}
-          >Download video thumbnail</a>
+        {this.state.copyState === 'ready' &&
+          <div
+            style={{
+              userSelect: 'none',
+              cursor: 'default',
+              color: '#fff',
+              background: '#000',
+              padding: '.2em .5em',
+              position: 'absolute',
+              zIndex: '99',
+              top: `${this.state.mediaRect.top + (this.state.mediaRect.height / 2) + window.scrollY}px`,
+              left: `${this.state.mediaRect.left + (this.state.mediaRect.width / 2)}px`,
+              transform: 'translate3d(-50%, -50%, 0)'
+            }}
+          >click again to copy</div>
         }
       </div>
     );
