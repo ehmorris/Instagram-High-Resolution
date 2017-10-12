@@ -72,13 +72,12 @@ class App extends Component {
 
   render() {
     const noticeStyle = {
-      background: '#000',
+      background: 'rgba(0, 0, 0, .7)',
       padding: '.2em .5em',
       display: 'block',
       float: 'left',
       color: '#fff',
       borderRadius: '3px',
-      opacity: '.7',
       margin: '16px 0 0 16px'
     };
 
