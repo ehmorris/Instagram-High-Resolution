@@ -30,8 +30,6 @@ class App extends Component {
     this.textInput.value = this.state.mediaUrl;
     this.textInput.select();
     document.execCommand('Copy');
-
-    console.log(`Copied ${this.state.mediaUrl}`);
   }
 
   terminateElementLoop(element, elements) {
