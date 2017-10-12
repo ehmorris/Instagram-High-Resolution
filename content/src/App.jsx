@@ -5,30 +5,23 @@ class App extends Component {
     super(props);
 
     this.state = {
-      mediaElement: null,
       mediaUrl: null,
-      mediaRect: null,
-      copyState: null
+      mediaRect: null
     }
   }
 
   componentDidMount() {
     document.addEventListener('click', ({clientX: x, clientY: y}) => {
       const elements = this.allElementsAtPoint(x, y);
-
       const mediaElement = elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
 
-      if (!mediaElement) return;
-
-      if (this.state.mediaElement === mediaElement) {
-        this.copyToClipboard();
-      } else {
+      if (mediaElement) {
         this.setState({
-          mediaElement: mediaElement,
           mediaUrl: this.assetUrl(mediaElement),
-          mediaRect: mediaElement.getClientRects()[0],
-          copyState: 'ready'
+          mediaRect: mediaElement.getClientRects()[0]
         });
+
+        this.copyToClipboard();
       }
     });
   }
@@ -38,12 +31,7 @@ class App extends Component {
     this.textInput.select();
     document.execCommand('Copy');
 
-    this.setState({
-      mediaElement: null,
-      mediaUrl: null,
-      mediaRect: null,
-      copyState: null
-    });
+    console.log(`Copied ${this.state.mediaUrl}`);
   }
 
   terminateElementLoop(element, elements) {
@@ -93,10 +81,9 @@ class App extends Component {
           }}
           ref={(input) => { this.textInput = input; }}
           type="text"
-          value=""
         />
 
-        {this.state.copyState === 'ready' &&
+        {this.state.mediaUrl &&
           <div
             style={{
               userSelect: 'none',
@@ -105,12 +92,14 @@ class App extends Component {
               background: '#000',
               padding: '.2em .5em',
               position: 'absolute',
+              borderRadius: '3px',
               zIndex: '99',
+              opacity: '.7',
               top: `${this.state.mediaRect.top + (this.state.mediaRect.height / 2) + window.scrollY}px`,
               left: `${this.state.mediaRect.left + (this.state.mediaRect.width / 2)}px`,
               transform: 'translate3d(-50%, -50%, 0)'
             }}
-          >click again to copy url</div>
+          >Copied</div>
         }
       </div>
     );
