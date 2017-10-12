@@ -108,6 +108,7 @@ class App extends Component {
           >
             <div style={noticeStyle}>Copied!</div>
             <a download style={noticeStyle} href={this.state.mediaUrl}>Download</a>
+            <a style={noticeStyle} target="_blank" href={this.state.mediaUrl}>Open in tab</a>
           </div>
         }
       </div>
