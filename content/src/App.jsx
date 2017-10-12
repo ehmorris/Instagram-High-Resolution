@@ -71,6 +71,17 @@ class App extends Component {
   }
 
   render() {
+    const noticeStyle = {
+      background: '#000',
+      padding: '.2em .5em',
+      display: 'block',
+      float: 'left',
+      color: '#fff',
+      borderRadius: '3px',
+      opacity: '.7',
+      margin: '16px 0 0 16px'
+    };
+
     return (
       <div>
         <input
@@ -88,18 +99,16 @@ class App extends Component {
             style={{
               userSelect: 'none',
               cursor: 'default',
-              color: '#fff',
-              background: '#000',
-              padding: '.2em .5em',
               position: 'absolute',
-              borderRadius: '3px',
+              display: 'block',
               zIndex: '99',
-              opacity: '.7',
-              top: `${this.state.mediaRect.top + (this.state.mediaRect.height / 2) + window.scrollY}px`,
-              left: `${this.state.mediaRect.left + (this.state.mediaRect.width / 2)}px`,
-              transform: 'translate3d(-50%, -50%, 0)'
+              top: `${this.state.mediaRect.top + window.scrollY}px`,
+              left: `${this.state.mediaRect.left}px`
             }}
-          >Copied</div>
+          >
+            <div style={noticeStyle}>Copied!</div>
+            <a download style={noticeStyle} href={this.state.mediaUrl}>Download</a>
+          </div>
         }
       </div>
     );
