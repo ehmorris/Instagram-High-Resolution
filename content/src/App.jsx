@@ -1,3 +1,8 @@
+USE CAPTURE EVENT instead of event listener click to circumvent instagram
+
+ALSO, instead of checking for 20+ instances in the stack, check if ANCESTORS INCLUDES HTML
+
+
 import React, {Component} from 'react';
 
 class App extends Component {
