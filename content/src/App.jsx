@@ -16,18 +16,20 @@ class App extends Component {
       const mediaElement = elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
 
       if (mediaElement) {
+        const mediaUrl = this.assetUrl(mediaElement);
+
         this.setState({
-          mediaUrl: this.assetUrl(mediaElement),
+          mediaUrl: mediaUrl,
           mediaRect: mediaElement.getClientRects()[0]
         });
 
-        this.copyToClipboard();
+        this.copyToClipboard(mediaUrl);
       }
     });
   }
 
-  copyToClipboard() {
-    this.textInput.value = this.state.mediaUrl;
+  copyToClipboard(text) {
+    this.textInput.value = text;
     this.textInput.select();
     document.execCommand('Copy');
   }
