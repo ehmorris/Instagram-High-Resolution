@@ -5,6 +5,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      mediaElement: null,
       mediaUrl: null,
       mediaRect: null,
       copyState: null
@@ -17,13 +18,17 @@ class App extends Component {
 
       const mediaElement = elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
 
-      if (mediaElement) {
+      if (!mediaElement) return;
+
+      if (this.state.mediaElement === mediaElement) {
+        this.copyToClipboard();
+      } else {
         this.setState({
+          mediaElement: mediaElement,
           mediaUrl: this.assetUrl(mediaElement),
           mediaRect: mediaElement.getClientRects()[0],
           copyState: 'ready'
         });
-        document.addEventListener('click', this.copyToClipboard.bind(this), {once: true});
       }
     });
   }
@@ -34,6 +39,7 @@ class App extends Component {
     document.execCommand('Copy');
 
     this.setState({
+      mediaElement: null,
       mediaUrl: null,
       mediaRect: null,
       copyState: null
@@ -42,9 +48,8 @@ class App extends Component {
 
   terminateElementLoop(element, elements) {
     return (
-      element.tagName === 'HTML' ||
-      element.tagName === 'BODY' ||
-      (elements.length > 1 && element === elements[elements.length - 1])
+      ['HTML', 'BODY', 'IMG', 'VIDEO'].includes(element.tagName) ||
+      elements.length > 20
     );
   }
 
@@ -105,7 +110,7 @@ class App extends Component {
               left: `${this.state.mediaRect.left + (this.state.mediaRect.width / 2)}px`,
               transform: 'translate3d(-50%, -50%, 0)'
             }}
-          >click again to copy</div>
+          >click again to copy url</div>
         }
       </div>
     );
