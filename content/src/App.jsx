@@ -1,8 +1,3 @@
-USE CAPTURE EVENT instead of event listener click to circumvent instagram
-
-ALSO, instead of checking for 20+ instances in the stack, check if ANCESTORS INCLUDES HTML
-
-
 import React, {Component} from 'react';
 
 class App extends Component {
@@ -30,7 +25,7 @@ class App extends Component {
 
         this.copyToClipboard(mediaUrl);
       }
-    });
+    }, true);
   }
 
   copyToClipboard(text) {
@@ -77,6 +72,16 @@ class App extends Component {
 
   render() {
     const noticeStyle = {
+      textShadow: '0px 0px 4px #000',
+      padding: '.2em .5em',
+      display: 'block',
+      fontWeight: 'bold',
+      float: 'left',
+      color: '#fff',
+      margin: '16px 0 0 16px'
+    };
+
+    const buttonStyle = {
       background: 'rgba(0, 0, 0, .7)',
       padding: '.2em .5em',
       display: 'block',
@@ -111,8 +116,8 @@ class App extends Component {
             }}
           >
             <div style={noticeStyle}>Copied!</div>
-            <a download style={noticeStyle} href={this.state.mediaUrl}>Download</a>
-            <a style={noticeStyle} target="_blank" href={this.state.mediaUrl}>Open in tab</a>
+            <a download style={buttonStyle} href={this.state.mediaUrl}>Download</a>
+            <a style={buttonStyle} target="_blank" href={this.state.mediaUrl}>Open in tab</a>
           </div>
         }
       </div>
