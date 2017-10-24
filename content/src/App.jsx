@@ -3,27 +3,23 @@ import React, {Component} from 'react';
 class App extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      mediaUrl: null,
-      mediaRect: null
-    }
+    this.state = { mediaUrl: null, mediaRect: null }
   }
 
   componentDidMount() {
     document.addEventListener('click', ({clientX: x, clientY: y}) => {
-      const elements = this.allElementsAtPoint(x, y);
-      const mediaElement = elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
+      this.setState({ mediaUrl: null, mediaRect: null });
+
+      const mediaElement = this.mediaAtPoint(x, y);
 
       if (mediaElement) {
+        const mediaRect = mediaElement.getClientRects()[0];
         const mediaUrl = this.assetUrl(mediaElement);
 
-        this.setState({
-          mediaUrl: mediaUrl,
-          mediaRect: mediaElement.getClientRects()[0]
-        });
-
-        this.copyToClipboard(mediaUrl);
+        if (mediaRect.width > 350) {
+          this.setState({ mediaUrl: mediaUrl, mediaRect: mediaRect });
+          this.copyToClipboard(mediaUrl);
+        }
       }
     }, true);
   }
@@ -55,8 +51,15 @@ class App extends Component {
     return stack;
   }
 
+  mediaAtPoint(x, y) {
+    const elements = this.allElementsAtPoint(x, y);
+    return elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
+  }
+
   pickSourceFromSrcset(srcset, filterByConstraint) {
-    return srcset.map((sourceAndConstraint) => {
+    const srcsetArray = asset.srcset.split(',');
+
+    return srcsetArray.map((sourceAndConstraint) => {
       const [source, constraint] = sourceAndConstraint.split(' ');
       if (constraint === filterByConstraint) return source;
     }).join('').trim();
@@ -64,7 +67,7 @@ class App extends Component {
 
   assetUrl(asset) {
     if (asset.srcset) {
-      return this.pickSourceFromSrcset(asset.srcset.split(','), '1080w');
+      return this.pickSourceFromSrcset(asset.srcset, '1080w');
     } else {
       return asset.src;
     }
