@@ -57,7 +57,7 @@ class App extends Component {
   }
 
   pickSourceFromSrcset(srcset, filterByConstraint) {
-    const srcsetArray = asset.srcset.split(',');
+    const srcsetArray = srcset.split(',');
 
     return srcsetArray.map((sourceAndConstraint) => {
       const [source, constraint] = sourceAndConstraint.split(' ');
