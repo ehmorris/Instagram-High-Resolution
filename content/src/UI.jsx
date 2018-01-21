@@ -4,13 +4,36 @@ import Buttons from './Buttons';
 import CopyToClipboard from './CopyToClipboard';
 
 class UI extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleScroll = this.handleScroll.bind(this);
+    this.state = { top: this.props.mediaRect.top };
+  }
+
+  componentDidMount() {
+    this.initialTopOffset = window.scrollY;
+    this.initialTop = this.state.top;
+    document.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll(event) {
+    const pixelsTraveled = window.scrollY - this.initialTopOffset;
+    const newTop = this.initialTop - pixelsTraveled;
+    this.setState({ top: newTop });
+  }
+
   render() {
     return (
       <div
         style={{
           position: 'fixed',
           zIndex: '100',
-          top: `${this.props.mediaRect.top}px`,
+          top: `${this.state.top}px`,
           left: `${this.props.mediaRect.left}px`,
           width: `${this.props.mediaRect.width}px`,
           height: `${this.props.mediaRect.height}px`,
