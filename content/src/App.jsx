@@ -4,12 +4,18 @@ import UI from './UI';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.resetApp = this.resetApp.bind(this);
     this.state = { mediaUrl: null, mediaRect: null }
+  }
+
+  resetApp() {
+    this.setState({ mediaUrl: null, mediaRect: null });
   }
 
   componentDidMount() {
     document.addEventListener('click', ({clientX: x, clientY: y}) => {
-      this.setState({ mediaUrl: null, mediaRect: null });
+      this.resetApp();
 
       const mediaElement = this.mediaAtPoint(x, y);
 
@@ -69,7 +75,13 @@ class App extends Component {
 
   render() {
     if (this.state.mediaUrl) {
-      return <UI url={this.state.mediaUrl} mediaRect={this.state.mediaRect} />;
+      return (
+        <UI
+          url={this.state.mediaUrl}
+          mediaRect={this.state.mediaRect}
+          shouldUnmount={this.resetApp}
+        />
+      );
     }
 
     return null;
