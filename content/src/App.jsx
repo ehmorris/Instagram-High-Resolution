@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import Frame from 'react-frame-component';
 import UI from './UI';
-import CopyToClipboard from './CopyToClipboard';
 
 class App extends Component {
   constructor(props) {
@@ -70,23 +68,11 @@ class App extends Component {
   }
 
   render() {
-    if (!this.state.mediaUrl) return false;
+    if (this.state.mediaUrl) {
+      return <UI url={this.state.mediaUrl} mediaRect={this.state.mediaRect} />;
+    }
 
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          zIndex: '100',
-          top: `${this.state.mediaRect.top}px`,
-          left: `${this.state.mediaRect.left}px`
-        }}
-      >
-        <CopyToClipboard content={this.state.mediaUrl} />
-        <Frame>
-          <UI url={this.state.mediaUrl} />
-        </Frame>
-      </div>
-    );
+    return null;
   }
 }
 
