@@ -17,7 +17,7 @@ class App extends Component {
 
       if (mediaElement) {
         const mediaRect = mediaElement.getClientRects()[0];
-        const mediaUrl = this.assetUrl(mediaElement);
+        const mediaUrl = this.getMediaUrl(mediaElement);
 
         if (mediaRect.width > 350) {
           this.setState({ mediaUrl: mediaUrl, mediaRect: mediaRect });
@@ -61,11 +61,11 @@ class App extends Component {
     }).join('').trim();
   }
 
-  assetUrl(asset) {
-    if (asset.srcset) {
-      return this.pickSourceFromSrcset(asset.srcset, '1080w');
+  getMediaUrl(media) {
+    if (media.srcset) {
+      return this.pickSourceFromSrcset(media.srcset, '1080w');
     } else {
-      return asset.src;
+      return media.src;
     }
   }
 
