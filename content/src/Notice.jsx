@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 class Notice extends Component {
   render() {
     const noticeStyle = {
+      animation: 'scaleIn .1s ease',
       float: 'left',
       fontWeight: 'bold',
       margin: '.5rem 0 0 .5rem',
@@ -14,7 +15,21 @@ class Notice extends Component {
       <div
         style={noticeStyle}
         {...this.props}
-      >{this.props.children}</div>
+      >
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes scaleIn {
+            from {
+              opacity: 0;
+              transform: scale(.8);
+            }
+            to {
+              opacity: 1,
+              transform: scale(1);
+            }
+          }
+        `}} />
+        {this.props.children}
+      </div>
     );
   }
 }

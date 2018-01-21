@@ -5,7 +5,6 @@ import Notice from './Notice';
 class Buttons extends Component {
   render() {
     const containerStyle = {
-      animation: 'scaleIn .1s ease',
       color: '#fff',
       cursor: 'default',
       fontFamily: '-apple-system, system-ui, sans-serif',
@@ -17,19 +16,6 @@ class Buttons extends Component {
 
     return (
       <div style={containerStyle}>
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes scaleIn {
-            from {
-              opacity: 0;
-              transform: scale(.8);
-            }
-            to {
-              opacity: 1,
-              transform: scale(1);
-            }
-          }
-        `}} />
-
         <Notice>Copied!</Notice>
 
         <Button
