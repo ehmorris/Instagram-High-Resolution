@@ -41,7 +41,6 @@ class UI extends Component {
           left: `${this.props.mediaRect.left}px`,
           width: `${this.props.mediaRect.width}px`,
           height: `${this.props.mediaRect.height}px`,
-          background: 'rgba(255, 0, 0, .5)'
         }}
       >
         <CopyToClipboard content={this.props.url} />
