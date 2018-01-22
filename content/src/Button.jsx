@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 class Button extends Component {
   render() {
     const buttonStyle = {
-      background: 'rgba(0, 0, 0, .75)',
-      borderRadius: '.25rem',
-      color: 'inherit',
+      background: '#fff',
+      color: '#000',
       display: 'block',
       float: 'left',
+      letterSpacing: '1px',
       margin: '.5rem 0 0 .5rem',
       padding: '.25rem .5rem',
       textDecoration: 'none'

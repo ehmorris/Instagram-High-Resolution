@@ -5,10 +5,10 @@ class Notice extends Component {
     const noticeStyle = {
       animation: 'scaleIn .1s ease',
       float: 'left',
-      fontWeight: 'bold',
-      margin: '.5rem 0 0 .5rem',
+      letterSpacing: '1px',
+      margin: '.5rem 0 0',
       padding: '.25rem .5rem',
-      textShadow: '0 0 .25rem #000',
+      textShadow: '1px 2px 0 #000',
     };
 
     return (

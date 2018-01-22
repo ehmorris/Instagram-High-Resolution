@@ -8,7 +8,8 @@ class Buttons extends Component {
       color: '#fff',
       cursor: 'default',
       fontFamily: '-apple-system, system-ui, sans-serif',
-      fontSize: '14px',
+      fontSize: '12px',
+      fontWeight: '600',
       transformOrigin: 'center',
       userSelect: 'none',
       whiteSpace: 'nowrap'
@@ -16,17 +17,17 @@ class Buttons extends Component {
 
     return (
       <div style={containerStyle}>
-        <Notice>Copied!</Notice>
+        <Notice>URL COPIED</Notice>
 
         <Button
           href={this.props.url}
           download
-        >Download</Button>
+        >DOWNLOAD</Button>
 
         <Button
           href={this.props.url}
           target="_blank"
-        >Open in tab</Button>
+        >OPEN IN TAB</Button>
       </div>
     );
   }
