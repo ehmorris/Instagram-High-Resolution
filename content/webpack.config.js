@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './content/src/index.js',
@@ -13,6 +14,12 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: ['node_modules']
   },
+
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: './content/icons' }
+    ])
+  ],
 
   module: {
     loaders: [
