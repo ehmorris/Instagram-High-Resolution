@@ -7,7 +7,7 @@
     "128": "extension_page_128.png"
   },
   "description": "Easily download high resolution copies of any Instagram photo or video.",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "content_scripts": [
     {
       "matches": ["*://*.instagram.com/*"],
