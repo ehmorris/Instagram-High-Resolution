@@ -36,11 +36,12 @@ class UI extends Component {
       <div
         style={{
           position: 'fixed',
-          zIndex: '100',
           top: `${this.state.top}px`,
           left: `${this.props.mediaRect.left}px`,
-          width: `${this.props.mediaRect.width}px`,
-          height: `${this.props.mediaRect.height}px`,
+          overflow: 'hidden',
+          width: '340px',
+          height: '60px',
+          zIndex: '100'
         }}
       >
         <CopyToClipboard content={this.props.url} />
