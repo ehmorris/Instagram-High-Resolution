@@ -65,11 +65,17 @@ class App extends Component {
     }).join('').trim();
   }
 
+  pickSourceFromSourceElements(sources) {
+    return sources[0].src;
+  }
+
   getMediaUrl(media) {
     if (media.srcset) {
       return this.pickSourceFromSrcset(media.srcset, '1080w');
+    } else if (media.childElementCount) {
+      return this.pickSourceFromSourceElements(media.children);
     } else {
-      return media.src;
+      return media.src || media.currentSrc;
     }
   }
 
