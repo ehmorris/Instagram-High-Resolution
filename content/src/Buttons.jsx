@@ -3,6 +3,25 @@ import Button from './Button';
 import Notice from './Notice';
 
 class Buttons extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { blobUrl: null };
+  }
+
+  componentDidMount() {
+    this.convertUrlToBlobUrl(this.props.url)
+      .then((blobUrl) => {
+        this.setState({ blobUrl: blobUrl });
+      });
+  }
+
+  convertUrlToBlobUrl(url) {
+    return fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => URL.createObjectURL(blob));
+  }
+
   render() {
     const containerStyle = {
       color: '#fff',
@@ -20,7 +39,7 @@ class Buttons extends Component {
         <Notice>URL COPIED</Notice>
 
         <Button
-          href={this.props.url}
+          href={this.state.blobUrl}
           download
         >DOWNLOAD</Button>
 
