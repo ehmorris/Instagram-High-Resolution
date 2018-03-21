@@ -1,6 +1,5 @@
 ![](https://i.imgur.com/u4MVEqB.png)
 
-
 ### About
 
 This is a simple Chrome Extension that finds the highest resolution url of an Instagram asset.
