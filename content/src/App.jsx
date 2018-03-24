@@ -32,8 +32,8 @@ class App extends Component {
 
   terminateElementLoop(element, elements) {
     return (
-      ['HTML', 'BODY', 'IMG', 'VIDEO'].includes(element.tagName) ||
-      elements.length > 20
+      ['HTML', 'BODY'].includes(element.tagName) ||
+      elements.length > 15
     );
   }
 
@@ -53,7 +53,14 @@ class App extends Component {
 
   mediaAtPoint(x, y) {
     const elements = this.allElementsAtPoint(x, y);
-    return elements.find(({tagName: tag}) => ['IMG', 'VIDEO'].includes(tag));
+    const videos = elements.filter(({tagName: tag}) => tag === 'VIDEO');
+    const images = elements.filter(({tagName: tag}) => tag === 'IMG');
+
+    if (videos.length) {
+      return videos[0];
+    } else if (images.length) {
+      return images[0];
+    }
   }
 
   pickSourceFromSrcset(srcset, filterByConstraint) {
