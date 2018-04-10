@@ -33,7 +33,16 @@ class App extends Component {
   terminateElementLoop(element, elements) {
     return (
       ['HTML', 'BODY'].includes(element.tagName) ||
+      this.elementIsSlideshowButton(element) ||
       elements.length > 15
+    );
+  }
+
+  elementIsSlideshowButton(element) {
+    return (
+      !element.href
+      && element.clientHeight < 50
+      && element.clientWidth < 50
     );
   }
 
