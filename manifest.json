@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "Instagram High Resolution Downloader",
+  "name": "High Resolution Downloader for Instagram",
   "icons": {
     "16": "icon_16.png",
     "48": "icon_48.png",
     "128": "icon_128.png"
   },
   "description": "Easily download high resolution copies of any Instagram photo or video.",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "content_scripts": [
     {
       "matches": ["*://*.instagram.com/*"],

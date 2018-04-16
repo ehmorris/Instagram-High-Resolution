@@ -1,6 +1,6 @@
 {
-  "name": "InstagramHighResolution",
-  "version": "2.0.10",
+  "name": "HighResolutionDownloaderForInstagram",
+  "version": "2.0.11",
   "private": true,
   "description": "",
   "dependencies": {
