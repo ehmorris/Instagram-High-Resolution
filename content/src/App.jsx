@@ -23,7 +23,7 @@ class App extends Component {
         const mediaRect = mediaElement.getClientRects()[0];
         const mediaUrl = this.getMediaUrl(mediaElement);
 
-        if (mediaRect.width > 350) {
+        if (mediaRect.width > 335) {
           this.setState({ mediaUrl: mediaUrl, mediaRect: mediaRect });
         }
       }
