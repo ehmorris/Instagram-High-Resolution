@@ -4,10 +4,10 @@
   "private": true,
   "description": "",
   "dependencies": {
-    "copy-webpack-plugin": "^4.3.1",
-    "react": "^15.5.0",
-    "react-dom": "^15.5.0",
-    "react-frame-component": "^2.0.1"
+    "copy-webpack-plugin": "^4.6.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-frame-component": "^4.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
