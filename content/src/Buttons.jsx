@@ -13,6 +13,8 @@ class Buttons extends Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
+
     this.loadingTimeout = window.setTimeout(() => {
       this.setState({
         blobLoading: true,
@@ -22,14 +24,17 @@ class Buttons extends Component {
     this.convertUrlToBlobUrl(this.props.url)
       .then((blobUrl) => {
         window.clearTimeout(this.loadingTimeout);
-        this.setState({
-          blobUrl: blobUrl,
-          blobLoading: false,
-        });
+        if (this.mounted) {
+          this.setState({
+            blobUrl: blobUrl,
+            blobLoading: false,
+          });
+        }
       });
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     window.clearTimeout(this.loadingTimeout);
   }
 
