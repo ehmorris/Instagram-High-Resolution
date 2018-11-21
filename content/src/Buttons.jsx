@@ -6,13 +6,26 @@ class Buttons extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { blobUrl: null };
+    this.state = {
+      blobUrl: null,
+      blobLoading: false,
+    };
   }
 
   componentDidMount() {
+    const loadingTimeout = window.setTimeout(() => {
+      this.setState({
+        blobLoading: true,
+      });
+    }, 500);
+
     this.convertUrlToBlobUrl(this.props.url)
       .then((blobUrl) => {
-        this.setState({ blobUrl: blobUrl });
+        window.clearTimeout(loadingTimeout);
+        this.setState({
+          blobUrl: blobUrl,
+          blobLoading: false,
+        });
       });
   }
 
@@ -41,7 +54,8 @@ class Buttons extends Component {
         <Button
           href={this.state.blobUrl}
           download
-        >DOWNLOAD</Button>
+          disabled={this.state.blobLoading}
+        >{this.state.blobLoading ? 'LOADING…' : 'DOWNLOAD'}</Button>
 
         <Button
           href={this.props.url}

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class Button extends Component {
   render() {
     const buttonStyle = {
-      background: '#fff',
+      background: this.props.disabled ? '#ddd' : '#fff',
       color: '#000',
       display: 'block',
       float: 'left',
