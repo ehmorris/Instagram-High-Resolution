@@ -17,7 +17,7 @@ class Buttons extends Component {
       this.setState({
         blobLoading: true,
       });
-    }, 500);
+    }, 700);
 
     this.convertUrlToBlobUrl(this.props.url)
       .then((blobUrl) => {
