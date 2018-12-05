@@ -63,9 +63,9 @@ class App extends Component {
   }
 
   clippingElements(element_stack) {
-    return element_stack.filter(el => {
-      const elementIsFullWidth = el.clientWidth === window.innerWidth;
-      return elementIsFullWidth ? false : getComputedStyle(el).overflow === 'hidden';
+    return element_stack.filter(element => {
+      const elementIsFullWidth = element.clientWidth === window.innerWidth;
+      return elementIsFullWidth ? false : getComputedStyle(element).overflow === 'hidden';
     });
   }
 
