@@ -76,10 +76,9 @@ class App extends Component {
     const clippingParents = this.clippingElements(elements);
 
     if (videos.length || images.length) {
-      return {
-        media: videos.length ? videos[0] : images[0],
-        clippingParent: clippingParents.length > 0 ? clippingParents[0] : null,
-      };
+      const media = videos.length ? videos[0] : images[0];
+      const clippingParent = clippingParents.length > 0 ? clippingParents[0] : null;
+      return { media, clippingParent };
     }
   }
 
