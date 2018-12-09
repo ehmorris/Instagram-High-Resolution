@@ -56,13 +56,16 @@ class Buttons extends Component {
       whiteSpace: 'nowrap'
     }
 
+    const fileURL = new URL(this.props.url);
+    const fileName = fileURL.pathname.split('/').pop();
+
     return (
       <div style={containerStyle}>
         <Notice>URL COPIED</Notice>
 
         <Button
           href={this.state.blobUrl}
-          download
+          download={fileName}
           disabled={this.state.blobLoading}
         >{this.state.blobLoading ? 'LOADING…' : 'DOWNLOAD'}</Button>
 
