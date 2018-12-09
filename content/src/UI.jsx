@@ -3,6 +3,8 @@ import Frame from 'react-frame-component';
 import Buttons from './Buttons';
 import CopyToClipboard from './CopyToClipboard';
 
+const minTopValue = 35;
+
 class UI extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +16,12 @@ class UI extends Component {
   componentDidMount() {
     this.initialTopOffset = window.scrollY;
     this.initialTop = this.state.top;
-    document.addEventListener('scroll', this.handleScroll);
+
+    if (this.initialTop < minTopValue) {
+      this.props.shouldUnmount();
+    }
+
+    document.addEventListener('scroll', this.handleScroll, { passive: true });
   }
 
   componentWillUnmount() {
@@ -26,7 +33,7 @@ class UI extends Component {
     const newTop = this.initialTop - pixelsTraveled;
     this.setState({ top: newTop });
 
-    if (newTop < -150) {
+    if (newTop < minTopValue) {
       this.props.shouldUnmount();
     }
   }
