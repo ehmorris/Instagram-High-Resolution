@@ -10,7 +10,7 @@ class Button extends Component {
       letterSpacing: '1px',
       margin: '.5rem 0 0 .5rem',
       padding: '.25rem .5rem',
-      textDecoration: 'none'
+      textDecoration: 'none',
     };
 
     return (

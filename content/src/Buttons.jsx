@@ -9,7 +9,15 @@ class Buttons extends Component {
     this.state = {
       blobUrl: null,
       blobLoading: false,
+      appCopy__Download: this.getTranslation('appCopy__Download'),
+      appCopy__URLCopied: this.getTranslation('appCopy__URLCopied'),
+      appCopy__OpenInTab: this.getTranslation('appCopy__OpenInTab'),
+      appCopy__Loading: this.getTranslation('appCopy__Loading'),
     };
+  }
+
+  getTranslation(key) {
+    return chrome.i18n.getMessage(key);
   }
 
   componentDidMount() {
@@ -61,18 +69,22 @@ class Buttons extends Component {
 
     return (
       <div style={containerStyle}>
-        <Notice>URL COPIED</Notice>
+        <Notice>{this.state.appCopy__URLCopied}</Notice>
 
         <Button
           href={this.state.blobUrl}
           download={fileName}
           disabled={this.state.blobLoading}
-        >{this.state.blobLoading ? 'LOADING…' : 'DOWNLOAD'}</Button>
+        >
+          {this.state.blobLoading
+            ? this.state.appCopy__Loading
+            : this.state.appCopy__Download}
+        </Button>
 
         <Button
           href={this.props.url}
           target="_blank"
-        >OPEN IN TAB</Button>
+        >{this.state.appCopy__OpenInTab}</Button>
       </div>
     );
   }

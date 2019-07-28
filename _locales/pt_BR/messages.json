@@ -1,0 +1,20 @@
+{
+  "appName": {
+    "message": "Melhor Dimensão Downloader para Instagram"
+  },
+  "appDesc": {
+    "message": "Faça o download de cópias da melhor dimensão de qualquer foto ou vídeo do Instagram."
+  },
+  "appCopy__Download": {
+    "message": "BAIXAR"
+  },
+  "appCopy__URLCopied": {
+    "message": "URL COPIADO"
+  },
+  "appCopy__OpenInTab": {
+    "message": "ABRIR NA GUIA"
+  },
+  "appCopy__Loading": {
+    "message": "CARREGANDO…"
+  }
+}

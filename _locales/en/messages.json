@@ -1,0 +1,20 @@
+{
+  "appName": {
+    "message": "High Resolution Downloader for Instagram"
+  },
+  "appDesc": {
+    "message": "Easily download high resolution copies of any Instagram photo or video."
+  },
+  "appCopy__Download": {
+    "message": "DOWNLOAD"
+  },
+  "appCopy__URLCopied": {
+    "message": "URL COPIED"
+  },
+  "appCopy__OpenInTab": {
+    "message": "OPEN IN TAB"
+  },
+  "appCopy__Loading": {
+    "message": "LOADING…"
+  }
+}
