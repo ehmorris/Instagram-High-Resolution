@@ -1,26 +1,32 @@
-const pickSourceFromSrcset = (srcset, filterByConstraint) => {
-  const srcsetArray = srcset.split(',');
+const srcsetParser = require('srcset');
 
-  return srcsetArray.map((sourceAndConstraint) => {
-    const [source, constraint] = sourceAndConstraint.split(' ');
-
-    fetch(source)
+const pickBiggestSourceFromSrcset = (srcset) => {
+  const sourcesWithBytesize = srcsetParser.parse(srcset).map((source) => {
+    return fetch(source.url)
       .then((response) => response.blob())
-      .then((blob) => console.log(blob.size));
+      .then(({size: bytesize}) => Object.assign(source, {bytesize}));
+  });
 
+  return Promise.all(sourcesWithBytesize).then((sources) => {
+    sources.sort((first, second) => {
+      if(first.bytesize > second.bytesize) return -1;
+      if(first.bytesize < second.bytesize) return 1;
+      return 0;
+    });
 
-    if (constraint === filterByConstraint) return source;
-  }).join('').trim();
+    return sources[0].url;
+  });
 };
 
-const pickSourceFromSourceElements = (sources) => sources[0].src;
+const pickFirstSourceFromSourceElements = (sources) =>
+  Promise.resolve(sources[0].src);
 
 export const getMediaUrl = (media) => {
   if (media.srcset) {
-    return pickSourceFromSrcset(media.srcset, '1080w');
+    return pickBiggestSourceFromSrcset(media.srcset);
   } else if (media.childElementCount) {
-    return pickSourceFromSourceElements(media.children);
+    return pickFirstSourceFromSourceElements(media.children);
   } else {
-    return media.src || media.currentSrc;
+    return Promise.resolve(media.src || media.currentSrc);
   }
 };

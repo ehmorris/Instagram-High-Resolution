@@ -23,9 +23,11 @@ class App extends Component {
       const mediaObject = mediaAtPoint(x, y);
 
       if (mediaObject && mediaObject.mediaRect.width > minimumImageWidth) {
-        this.setState({
-          mediaUrl: getMediaUrl(mediaObject.media),
-          mediaRect: mediaObject.mediaRect
+        getMediaUrl(mediaObject.media).then((mediaUrl) => {
+          this.setState({
+            mediaUrl: mediaUrl,
+            mediaRect: mediaObject.mediaRect
+          });
         });
       }
     }, true);

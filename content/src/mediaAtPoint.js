@@ -5,10 +5,10 @@ const elementIsSlideshowButton = (element) =>
   && element.clientHeight <= slideshowButtonSize
   && element.clientWidth <= slideshowButtonSize;
 
-const terminateElementLoop = (element, elements) =>
+const terminateElementLoop = (element, elementStack) =>
   ['HTML', 'BODY'].includes(element.tagName) ||
   elementIsSlideshowButton(element) ||
-  elements.length > maximumElementStackSize;
+  elementStack.length > maximumElementStackSize;
 
 const allElementsAtPoint = (x, y) => {
   let stack = [], element;
@@ -31,33 +31,40 @@ const allElementsAtPoint = (x, y) => {
 // its scale.
 //
 // This method searches an element's parents for the
-// `overflow: hidden;` property. If a clipping parent exists, we can
-// use that parent's bounds to position the extension UI rather than
-// the clipped image's bounds.
-const clippingElements = (element_stack) => {
-  return element_stack.filter(element => {
-    const elementIsFullWidth = element.clientWidth === window.innerWidth;
-    return elementIsFullWidth ? false : getComputedStyle(element).overflow === 'hidden';
-  });
+// `overflow: hidden;` property. If a clipping parent exists, and
+// it's smaller than the video or image, we can use the parent's
+// bounds to position the extension UI.
+const getClippingParentRect = (mediaRect, elementStack) => {
+  return elementStack.map((element) => {
+    const hasOverflowProperty = getComputedStyle(element).overflow === 'hidden';
+
+    if (hasOverflowProperty) {
+      const parentRect = element.getClientRects()[0];
+
+      if (parentRect.height < mediaRect.height) {
+        return parentRect;
+      }
+    }
+
+    return null;
+  }).find((rect) => rect !== null);
 };
 
-const getMediaRect = (media, elements) => {
-  const clippingParents = clippingElements(elements);
-  const clippingParent = clippingParents.length > 0 ? clippingParents[0] : null;
+const getMediaRect = (media, elementStack) => {
+  const mediaRect = media.getClientRects()[0];
+  const clippingParentRect = getClippingParentRect(mediaRect, elementStack);
 
-  return clippingParent
-    ? clippingParent.getClientRects()[0]
-    : media.getClientRects()[0];
+  return clippingParentRect ? clippingParentRect : mediaRect;
 };
 
 export const mediaAtPoint = (x, y) => {
-  const elements = allElementsAtPoint(x, y);
-  const videos = elements.filter(({tagName: tag}) => tag === 'VIDEO');
-  const images = elements.filter(({tagName: tag}) => tag === 'IMG');
+  const elementStack = allElementsAtPoint(x, y);
+  const videos = elementStack.filter(({tagName: tag}) => tag === 'VIDEO');
+  const images = elementStack.filter(({tagName: tag}) => tag === 'IMG');
 
   if (videos.length || images.length) {
     const media = videos.length ? videos[0] : images[0];
-    const mediaRect = getMediaRect(media, elements);
+    const mediaRect = getMediaRect(media, elementStack);
 
     return {media, mediaRect};
   }
