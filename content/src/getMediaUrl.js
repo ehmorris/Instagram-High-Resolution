@@ -18,14 +18,14 @@ const pickBiggestSourceFromSrcset = (srcset) => {
   });
 };
 
-const pickFirstSourceFromSourceElements = (sources) =>
+const pickFirstSourceElement = (sources) =>
   Promise.resolve(sources[0].src);
 
 export const getMediaUrl = (media) => {
   if (media.srcset) {
     return pickBiggestSourceFromSrcset(media.srcset);
   } else if (media.childElementCount) {
-    return pickFirstSourceFromSourceElements(media.children);
+    return pickFirstSourceElement(media.children);
   } else {
     return Promise.resolve(media.src || media.currentSrc);
   }
