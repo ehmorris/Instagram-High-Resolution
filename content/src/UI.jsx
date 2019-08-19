@@ -1,63 +1,51 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import Frame from 'react-frame-component';
 import Buttons from './Buttons';
 import CopyToClipboard from './CopyToClipboard';
+import { minTopValue } from './constants';
 
-const minTopValue = 35;
+function UI({mediaRect, url, shouldUnmount}) {
+  const [top, setTop] = useState(mediaRect.top);
+  const [initialTopOffset, setInitialTopOffset] = useState(mediaRect.top);
 
-class UI extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleScroll = this.handleScroll.bind(this);
-    this.state = { top: this.props.mediaRect.top };
-  }
-
-  componentDidMount() {
-    this.initialTopOffset = window.scrollY;
-    this.initialTop = this.state.top;
-
-    if (this.initialTop < minTopValue) {
-      this.props.shouldUnmount();
-    }
-
-    document.addEventListener('scroll', this.handleScroll, { passive: true });
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll(event) {
-    const pixelsTraveled = window.scrollY - this.initialTopOffset;
-    const newTop = this.initialTop - pixelsTraveled;
-    this.setState({ top: newTop });
+  const handleScroll = (event) => {
+    const pixelsTraveled = window.scrollY - initialTopOffset;
+    const newTop = top - pixelsTraveled;
+    setTop(newTop);
 
     if (newTop < minTopValue) {
-      this.props.shouldUnmount();
+      shouldUnmount();
     }
-  }
+  };
 
-  render() {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: `${this.state.top}px`,
-          left: `${this.props.mediaRect.left}px`,
-          overflow: 'hidden',
-          width: '340px',
-          height: '60px',
-          zIndex: '100'
-        }}
-      >
-        <CopyToClipboard content={this.props.url} />
-        <Frame>
-          <Buttons url={this.props.url} />
-        </Frame>
-      </div>
-    );
-  }
+  useEffect(() => {
+    setInitialTopOffset(window.scrollY);
+
+    if (top < minTopValue) shouldUnmount();
+
+    document.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => document.removeEventListener('scroll', handleScroll);
+  });
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: `${top}px`,
+        left: `${mediaRect.left}px`,
+        overflow: 'hidden',
+        width: '340px',
+        height: '60px',
+        zIndex: '100'
+      }}
+    >
+      <CopyToClipboard content={url} />
+      <Frame>
+        <Buttons url={url} />
+      </Frame>
+    </div>
+  );
 }
 
 export default UI;

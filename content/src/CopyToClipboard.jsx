@@ -1,28 +1,28 @@
-import React, {Component} from 'react';
+import React, { useRef, useEffect } from 'react';
 
-class CopyToClipboard extends Component {
-  componentDidMount() {
+function CopyToClipboard({content}) {
+  const urlContainerElement = useRef(null);
+
+  useEffect(() => {
     const selection = window.getSelection();
     const range = document.createRange();
-    range.selectNodeContents(this.url);
+    range.selectNodeContents(urlContainerElement.current);
     selection.removeAllRanges();
     selection.addRange(range);
     document.execCommand('copy');
     selection.removeAllRanges();
-  }
+  });
 
-  render() {
-    return (
-      <div
-        style={{
-          opacity: '0',
-          pointerEvents: 'none',
-          position: 'absolute'
-        }}
-        ref={(input) => { this.url = input; }}
-      >{this.props.content}</div>
-    );
-  }
+  return (
+    <div
+      style={{
+        opacity: '0',
+        pointerEvents: 'none',
+        position: 'absolute'
+      }}
+      ref={urlContainerElement}
+    >{content}</div>
+  );
 }
 
 export default CopyToClipboard;

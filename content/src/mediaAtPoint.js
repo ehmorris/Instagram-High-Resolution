@@ -50,8 +50,8 @@ const getClippingParentRect = (mediaRect, elementStack) => {
   }).find((rect) => rect !== null);
 };
 
-const getMediaRect = (media, elementStack) => {
-  const mediaRect = media.getClientRects()[0];
+const getMediaRect = (mediaElement, elementStack) => {
+  const mediaRect = mediaElement.getClientRects()[0];
   const clippingParentRect = getClippingParentRect(mediaRect, elementStack);
 
   return clippingParentRect ? clippingParentRect : mediaRect;
@@ -63,9 +63,9 @@ export const mediaAtPoint = (x, y) => {
   const images = elementStack.filter(({tagName: tag}) => tag === 'IMG');
 
   if (videos.length || images.length) {
-    const media = videos.length ? videos[0] : images[0];
-    const mediaRect = getMediaRect(media, elementStack);
+    const mediaElement = videos.length ? videos[0] : images[0];
+    const mediaRect = getMediaRect(mediaElement, elementStack);
 
-    return {media, mediaRect};
+    return {mediaElement, mediaRect};
   }
 };

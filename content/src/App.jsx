@@ -1,51 +1,40 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import UI from './UI';
 import { mediaAtPoint } from './mediaAtPoint';
 import { getMediaUrl } from './getMediaUrl';
 import { minimumImageWidth } from './constants';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App() {
+  const [mediaUrl, setMediaUrl] = useState(null);
+  const [mediaRect, setMediaRect] = useState(null);
 
-    this.resetApp = this.resetApp.bind(this);
-    this.state = { mediaUrl: null, mediaRect: null }
-  }
+  const resetApp = () => {
+    setMediaUrl(null);
+    setMediaRect(null);
+  };
 
-  resetApp() {
-    this.setState({ mediaUrl: null, mediaRect: null });
-  }
+  const setMedia = ({clientX: x, clientY: y}) => {
+    resetApp();
 
-  componentDidMount() {
-    document.addEventListener('click', ({clientX: x, clientY: y}) => {
-      this.resetApp();
+    const mediaObject = mediaAtPoint(x, y);
 
-      const mediaObject = mediaAtPoint(x, y);
-
-      if (mediaObject && mediaObject.mediaRect.width > minimumImageWidth) {
-        getMediaUrl(mediaObject.media).then((mediaUrl) => {
-          this.setState({
-            mediaUrl: mediaUrl,
-            mediaRect: mediaObject.mediaRect
-          });
-        });
-      }
-    }, true);
-  }
-
-  render() {
-    if (!this.state.mediaUrl) {
-      return null;
+    if (mediaObject && mediaObject.mediaRect.width > minimumImageWidth) {
+      getMediaUrl(mediaObject.mediaElement).then((mediaUrl) => {
+        setMediaUrl(mediaUrl);
+        setMediaRect(mediaObject.mediaRect);
+      });
     }
+  };
 
-    return (
-      <UI
-        url={this.state.mediaUrl}
-        mediaRect={this.state.mediaRect}
-        shouldUnmount={this.resetApp}
-      />
-    );
-  }
+  useEffect(() => {
+    document.addEventListener('click', setMedia, true);
+
+    return () => document.removeEventListener('click', setMedia, true);
+  });
+
+  return mediaUrl && mediaRect
+    ? <UI url={mediaUrl} mediaRect={mediaRect} shouldUnmount={resetApp} />
+    : null;
 }
 
 export default App;
