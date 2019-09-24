@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Button from './Button';
 import Notice from './Notice';
 
@@ -29,16 +29,15 @@ class Buttons extends Component {
       });
     }, 700);
 
-    this.convertUrlToBlobUrl(this.props.url)
-      .then((blobUrl) => {
-        window.clearTimeout(this.loadingTimeout);
-        if (this.mounted) {
-          this.setState({
-            blobUrl: blobUrl,
-            blobLoading: false,
-          });
-        }
-      });
+    this.convertUrlToBlobUrl(this.props.url).then(blobUrl => {
+      window.clearTimeout(this.loadingTimeout);
+      if (this.mounted) {
+        this.setState({
+          blobUrl: blobUrl,
+          blobLoading: false,
+        });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -48,8 +47,8 @@ class Buttons extends Component {
 
   convertUrlToBlobUrl(url) {
     return fetch(url)
-      .then((response) => response.blob())
-      .then((blob) => URL.createObjectURL(blob));
+      .then(response => response.blob())
+      .then(blob => URL.createObjectURL(blob));
   }
 
   render() {
@@ -61,8 +60,8 @@ class Buttons extends Component {
       fontWeight: '600',
       transformOrigin: 'center',
       userSelect: 'none',
-      whiteSpace: 'nowrap'
-    }
+      whiteSpace: 'nowrap',
+    };
 
     const fileURL = new URL(this.props.url);
     const fileName = fileURL.pathname.split('/').pop();
@@ -81,10 +80,9 @@ class Buttons extends Component {
             : this.state.appCopy__Download}
         </Button>
 
-        <Button
-          href={this.props.url}
-          target="_blank"
-        >{this.state.appCopy__OpenInTab}</Button>
+        <Button href={this.props.url} target="_blank">
+          {this.state.appCopy__OpenInTab}
+        </Button>
       </div>
     );
   }

@@ -11,11 +11,10 @@ function Notice(props) {
   };
 
   return (
-    <div
-      style={noticeStyle}
-      {...props}
-    >
-      <style dangerouslySetInnerHTML={{__html: `
+    <div style={noticeStyle} {...props}>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes scaleIn {
           from {
             opacity: 0;
@@ -26,7 +25,9 @@ function Notice(props) {
             transform: scale(1);
           }
         }
-      `}} />
+      `,
+        }}
+      />
       {props.children}
     </div>
   );

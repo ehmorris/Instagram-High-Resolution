@@ -15,7 +15,5 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": [
-    "clipboardWrite"
-  ]
+  "permissions": ["clipboardWrite"]
 }

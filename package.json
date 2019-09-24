@@ -19,6 +19,10 @@
     "gulp-load-plugins": "^1.2.0",
     "gulp-util": "^3.0.7",
     "rimraf": "^2.5.0",
-    "webpack": "^2.6.0"
+    "webpack": "^2.6.0",
+    "prettier": "^1.18.2"
+  },
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,jsx,json}\""
   }
 }

@@ -7,19 +7,15 @@ module.exports = {
   output: {
     filename: 'content.js',
     path: path.join(__dirname, '../', 'build'),
-    publicPath: '/'
+    publicPath: '/',
   },
 
   resolve: {
     extensions: ['.js', '.jsx'],
-    modules: ['node_modules']
+    modules: ['node_modules'],
   },
 
-  plugins: [
-    new CopyWebpackPlugin([
-      { from: './content/icons' }
-    ])
-  ],
+  plugins: [new CopyWebpackPlugin([{ from: './content/icons' }])],
 
   module: {
     loaders: [
@@ -29,9 +25,9 @@ module.exports = {
         exclude: /(node_modules)/,
         include: path.join(__dirname, 'src'),
         query: {
-          presets: ['es2015', 'react']
-        }
-      }
-    ]
-  }
+          presets: ['es2015', 'react'],
+        },
+      },
+    ],
+  },
 };

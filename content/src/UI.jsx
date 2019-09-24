@@ -4,11 +4,11 @@ import Buttons from './Buttons';
 import CopyToClipboard from './CopyToClipboard';
 import { minTopValue } from './constants';
 
-function UI({mediaRect, url, shouldUnmount}) {
+function UI({ mediaRect, url, shouldUnmount }) {
   const [top, setTop] = useState(mediaRect.top);
   const [initialTopOffset, setInitialTopOffset] = useState(mediaRect.top);
 
-  const handleScroll = (event) => {
+  const handleScroll = event => {
     const pixelsTraveled = window.scrollY - initialTopOffset;
     const newTop = top - pixelsTraveled;
     setTop(newTop);
@@ -37,7 +37,7 @@ function UI({mediaRect, url, shouldUnmount}) {
         overflow: 'hidden',
         width: '340px',
         height: '60px',
-        zIndex: '100'
+        zIndex: '100',
       }}
     >
       <CopyToClipboard content={url} />

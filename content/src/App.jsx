@@ -13,13 +13,13 @@ function App() {
     setMediaRect(null);
   };
 
-  const setMedia = ({clientX: x, clientY: y}) => {
+  const setMedia = ({ clientX: x, clientY: y }) => {
     resetApp();
 
     const mediaObject = mediaAtPoint(x, y);
 
     if (mediaObject && mediaObject.mediaRect.width > minimumImageWidth) {
-      getMediaUrl(mediaObject.mediaElement).then((mediaUrl) => {
+      getMediaUrl(mediaObject.mediaElement).then(mediaUrl => {
         setMediaUrl(mediaUrl);
         setMediaRect(mediaObject.mediaRect);
       });
@@ -32,9 +32,9 @@ function App() {
     return () => document.removeEventListener('click', setMedia, true);
   });
 
-  return mediaUrl && mediaRect
-    ? <UI url={mediaUrl} mediaRect={mediaRect} shouldUnmount={resetApp} />
-    : null;
+  return mediaUrl && mediaRect ? (
+    <UI url={mediaUrl} mediaRect={mediaRect} shouldUnmount={resetApp} />
+  ) : null;
 }
 
 export default App;

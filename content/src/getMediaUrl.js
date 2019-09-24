@@ -1,16 +1,16 @@
 const srcsetParser = require('srcset');
 
-const pickBiggestSourceFromSrcset = (srcset) => {
-  const sourcesWithBytesize = srcsetParser.parse(srcset).map((source) => {
+const pickBiggestSourceFromSrcset = srcset => {
+  const sourcesWithBytesize = srcsetParser.parse(srcset).map(source => {
     return fetch(source.url)
-      .then((response) => response.blob())
-      .then(({size: bytesize}) => Object.assign(source, {bytesize}));
+      .then(response => response.blob())
+      .then(({ size: bytesize }) => Object.assign(source, { bytesize }));
   });
 
-  return Promise.all(sourcesWithBytesize).then((sources) => {
+  return Promise.all(sourcesWithBytesize).then(sources => {
     sources.sort((first, second) => {
-      if(first.bytesize > second.bytesize) return -1;
-      if(first.bytesize < second.bytesize) return 1;
+      if (first.bytesize > second.bytesize) return -1;
+      if (first.bytesize < second.bytesize) return 1;
       return 0;
     });
 
@@ -18,10 +18,9 @@ const pickBiggestSourceFromSrcset = (srcset) => {
   });
 };
 
-const pickFirstSourceElement = (sources) =>
-  Promise.resolve(sources[0].src);
+const pickFirstSourceElement = sources => Promise.resolve(sources[0].src);
 
-export const getMediaUrl = (media) => {
+export const getMediaUrl = media => {
   if (media.srcset) {
     return pickBiggestSourceFromSrcset(media.srcset);
   } else if (media.childElementCount) {

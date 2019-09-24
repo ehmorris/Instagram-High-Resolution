@@ -13,10 +13,9 @@ function Button(props) {
   };
 
   return (
-    <a
-      style={buttonStyle}
-      {...props}
-    >{props.children}</a>
+    <a style={buttonStyle} {...props}>
+      {props.children}
+    </a>
   );
 }
 

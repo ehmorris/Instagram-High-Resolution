@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-function CopyToClipboard({content}) {
+function CopyToClipboard({ content }) {
   const urlContainerElement = useRef(null);
 
   useEffect(() => {
@@ -18,10 +18,12 @@ function CopyToClipboard({content}) {
       style={{
         opacity: '0',
         pointerEvents: 'none',
-        position: 'absolute'
+        position: 'absolute',
       }}
       ref={urlContainerElement}
-    >{content}</div>
+    >
+      {content}
+    </div>
   );
 }
 

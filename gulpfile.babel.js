@@ -7,9 +7,9 @@ const plugins = loadPlugins();
 
 import contentWebpackConfig from './content/webpack.config';
 
-gulp.task('content-js', ['clean'], (cb) => {
+gulp.task('content-js', ['clean'], cb => {
   webpack(contentWebpackConfig, (err, stats) => {
-    if(err) throw new plugins.util.PluginError('webpack', err);
+    if (err) throw new plugins.util.PluginError('webpack', err);
 
     plugins.util.log('[webpack]', stats.toString());
 
@@ -18,17 +18,18 @@ gulp.task('content-js', ['clean'], (cb) => {
 });
 
 gulp.task('copy-manifest', ['clean'], () => {
-  return gulp.src('manifest.json')
+  return gulp.src('manifest.json').pipe(gulp.dest('./build'));
+});
+
+gulp.task('copy-locales', ['clean'], function() {
+  return gulp
+    .src(['./_locales/**/*'], {
+      base: '.',
+    })
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('copy-locales', ['clean'], function () {
-  return gulp.src(['./_locales/**/*'], {
-    base: '.'
-  }).pipe(gulp.dest('./build'));
-});
-
-gulp.task('clean', (cb) => {
+gulp.task('clean', cb => {
   rimraf('./build', cb);
 });
 
