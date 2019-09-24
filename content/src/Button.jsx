@@ -2,7 +2,7 @@ import React from 'react';
 
 function Button(props) {
   const buttonStyle = {
-    background: props.disabled ? '#ddd' : '#fff',
+    background: props.disabled ? '#ddd' : 'red',
     color: '#000',
     display: 'block',
     float: 'left',
