@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Frame from 'react-frame-component';
-import LoadingMessage from './LoadingMessage';
-import CopyToClipboard from './CopyToClipboard';
-import { minTopValue } from './constants';
 
-function LoadingUI({ mediaRect, shouldUnmount }) {
+function StickyScrollingContainer({ children, mediaRect, shouldUnmount }) {
   const [top, setTop] = useState(mediaRect.top);
   const [initialTopOffset, setInitialTopOffset] = useState(mediaRect.top);
+  const minTopValue = 35;
 
   const handleScroll = event => {
     const pixelsTraveled = window.scrollY - initialTopOffset;
@@ -40,12 +37,9 @@ function LoadingUI({ mediaRect, shouldUnmount }) {
         zIndex: '100',
       }}
     >
-      <Frame>
-        <LoadingMessage />
-      </Frame>
+      {children}
     </div>
   );
 }
 
-export default LoadingUI;
-
+export default StickyScrollingContainer;

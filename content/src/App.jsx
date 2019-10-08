@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import UI from './UI';
-import LoadingUI from './LoadingUI';
+import Frame from 'react-frame-component';
+import StickyScrollingContainer from './StickyScrollingContainer';
+import CopyToClipboard from './CopyToClipboard';
+import LoadingMessage from './LoadingMessage';
+import Buttons from './Buttons';
 import { mediaAtPoint } from './mediaAtPoint';
 import { getMediaUrl } from './getMediaUrl';
 import { minimumImageWidth } from './constants';
@@ -9,6 +12,7 @@ function App() {
   const [mediaUrl, setMediaUrl] = useState(null);
   const [mediaRect, setMediaRect] = useState(null);
   const [fetchingMediaUrl, setFetchingMediaUrl] = useState(false);
+  let loaderTimeout;
 
   const resetApp = () => {
     setMediaUrl(null);
@@ -23,7 +27,8 @@ function App() {
 
     if (mediaObject && mediaObject.mediaRect.width > minimumImageWidth) {
       setMediaRect(mediaObject.mediaRect);
-      setFetchingMediaUrl(true);
+
+      loaderTimeout = window.setTimeout(() => setFetchingMediaUrl(true), 500);
 
       getMediaUrl(mediaObject.mediaElement).then(mediaUrl => {
         setMediaUrl(mediaUrl);
@@ -35,13 +40,29 @@ function App() {
   useEffect(() => {
     document.addEventListener('click', setMedia, true);
 
-    return () => document.removeEventListener('click', setMedia, true);
+    return () => {
+      window.clearTimeout(loaderTimeout);
+      document.removeEventListener('click', setMedia, true);
+    }
   });
 
   if (fetchingMediaUrl) {
-    return <LoadingUI mediaRect={mediaRect} shouldUnmount={resetApp} />;
+    return (
+      <StickyScrollingContainer mediaRect={mediaRect} shouldUnmount={resetApp}>
+        <Frame>
+          <LoadingMessage />
+        </Frame>
+      </StickyScrollingContainer>
+    );
   } else if (mediaUrl && mediaRect) {
-    return <UI url={mediaUrl} mediaRect={mediaRect} shouldUnmount={resetApp} />;
+    return (
+      <StickyScrollingContainer mediaRect={mediaRect} shouldUnmount={resetApp}>
+        <CopyToClipboard content={mediaUrl} />
+        <Frame>
+          <Buttons url={mediaUrl} />
+        </Frame>
+      </StickyScrollingContainer>
+    );
   } else {
     return null;
   }

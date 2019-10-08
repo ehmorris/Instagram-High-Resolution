@@ -23,6 +23,7 @@
     "prettier": "^1.18.2"
   },
   "scripts": {
-    "format": "prettier --write \"**/*.{js,jsx,json}\""
+    "format": "prettier --write \"**/*.{js,jsx,json}\"",
+    "develop": "yarn run gulp && yarn run gulp watch"
   }
 }
