@@ -35,17 +35,18 @@ const allElementsAtPoint = (x, y) => {
 // `overflow: hidden;` property. If a clipping parent exists, and
 // it's smaller than the video or image, we can use the parent's
 // bounds to position the extension UI.
-const getClippingParentRect = (mediaRect, elementStack) => {
+const getClippingParentRect = (mediaElement, mediaRect, elementStack) => {
   return elementStack
     .map(element => {
       const hasOverflowProperty =
         getComputedStyle(element).overflow === 'hidden';
 
       if (hasOverflowProperty) {
-        const parentRect = element.getClientRects()[0];
+        const overflowElementRect = element.getClientRects()[0];
+        const elementIsParent = element.contains(mediaElement);
 
-        if (parentRect.height < mediaRect.height) {
-          return parentRect;
+        if (elementIsParent && overflowElementRect.height < mediaRect.height) {
+          return overflowElementRect;
         }
       }
 
@@ -56,7 +57,7 @@ const getClippingParentRect = (mediaRect, elementStack) => {
 
 const getMediaRect = (mediaElement, elementStack) => {
   const mediaRect = mediaElement.getClientRects()[0];
-  const clippingParentRect = getClippingParentRect(mediaRect, elementStack);
+  const clippingParentRect = getClippingParentRect(mediaElement, mediaRect, elementStack);
 
   return clippingParentRect ? clippingParentRect : mediaRect;
 };
