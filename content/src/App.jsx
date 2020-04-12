@@ -15,6 +15,7 @@ function App() {
   let loaderTimeout;
 
   const resetApp = () => {
+    window.clearTimeout(loaderTimeout);
     setMediaUrl(null);
     setMediaRect(null);
     setFetchingMediaUrl(false);
@@ -31,8 +32,11 @@ function App() {
       loaderTimeout = window.setTimeout(() => setFetchingMediaUrl(true), 500);
 
       getMediaUrl(mediaObject.mediaElement).then(mediaUrl => {
+        window.clearTimeout(loaderTimeout);
         setMediaUrl(mediaUrl);
         setFetchingMediaUrl(false);
+      }, () => {
+        window.clearTimeout(loaderTimeout);
       });
     }
   };
@@ -46,7 +50,9 @@ function App() {
     }
   });
 
-  if (fetchingMediaUrl) {
+  if (!mediaRect) {
+    return null;
+  } else if (fetchingMediaUrl) {
     return (
       <StickyScrollingContainer mediaRect={mediaRect} shouldUnmount={resetApp}>
         <Frame>
@@ -54,7 +60,7 @@ function App() {
         </Frame>
       </StickyScrollingContainer>
     );
-  } else if (mediaUrl && mediaRect) {
+  } else if (mediaUrl) {
     return (
       <StickyScrollingContainer mediaRect={mediaRect} shouldUnmount={resetApp}>
         <CopyToClipboard content={mediaUrl} />
