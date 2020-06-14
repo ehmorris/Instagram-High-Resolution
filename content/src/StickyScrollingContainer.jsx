@@ -34,7 +34,7 @@ function StickyScrollingContainer({ children, mediaRect, shouldUnmount }) {
         overflow: 'hidden',
         width: '340px',
         height: '60px',
-        zIndex: '100',
+        zIndex: '9999',
       }}
     >
       {children}

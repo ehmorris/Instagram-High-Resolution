@@ -8,7 +8,7 @@
     "48": "icon_48.png",
     "128": "icon_128.png"
   },
-  "version": "2.0.22",
+  "version": "2.0.23",
   "content_scripts": [
     {
       "matches": ["*://*.instagram.com/*"],
