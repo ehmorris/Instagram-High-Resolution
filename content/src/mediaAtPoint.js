@@ -5,9 +5,13 @@ const elementIsSlideshowButton = element =>
   element.clientHeight <= slideshowButtonSize &&
   element.clientWidth <= slideshowButtonSize;
 
+const elementIsInput = element =>
+  element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement;
+
 const terminateElementLoop = (element, elementStack) =>
   ['HTML', 'BODY'].includes(element.tagName) ||
   elementIsSlideshowButton(element) ||
+  elementIsInput(element) ||
   elementStack.length > maximumElementStackSize;
 
 const allElementsAtPoint = (x, y) => {
@@ -57,7 +61,11 @@ const getClippingParentRect = (mediaElement, mediaRect, elementStack) => {
 
 const getMediaRect = (mediaElement, elementStack) => {
   const mediaRect = mediaElement.getClientRects()[0];
-  const clippingParentRect = getClippingParentRect(mediaElement, mediaRect, elementStack);
+  const clippingParentRect = getClippingParentRect(
+    mediaElement,
+    mediaRect,
+    elementStack
+  );
 
   return clippingParentRect ? clippingParentRect : mediaRect;
 };

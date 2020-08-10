@@ -31,13 +31,16 @@ function App() {
 
       loaderTimeout = window.setTimeout(() => setFetchingMediaUrl(true), 500);
 
-      getMediaUrl(mediaObject.mediaElement).then(mediaUrl => {
-        window.clearTimeout(loaderTimeout);
-        setMediaUrl(mediaUrl);
-        setFetchingMediaUrl(false);
-      }, () => {
-        window.clearTimeout(loaderTimeout);
-      });
+      getMediaUrl(mediaObject.mediaElement).then(
+        mediaUrl => {
+          window.clearTimeout(loaderTimeout);
+          setMediaUrl(mediaUrl);
+          setFetchingMediaUrl(false);
+        },
+        () => {
+          window.clearTimeout(loaderTimeout);
+        }
+      );
     }
   };
 
@@ -47,7 +50,7 @@ function App() {
     return () => {
       window.clearTimeout(loaderTimeout);
       document.removeEventListener('click', setMedia, true);
-    }
+    };
   });
 
   if (!mediaRect) {
