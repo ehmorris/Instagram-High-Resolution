@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function StickyScrollingContainer({ children, mediaRect, shouldUnmount }) {
   const [top, setTop] = useState(mediaRect.top);
   const [initialTopOffset, setInitialTopOffset] = useState(mediaRect.top);
-  const minTopValue = 35;
+  const minTopValue = 21;
 
   const handleScroll = event => {
     const pixelsTraveled = window.scrollY - initialTopOffset;
@@ -18,7 +18,9 @@ function StickyScrollingContainer({ children, mediaRect, shouldUnmount }) {
   useEffect(() => {
     setInitialTopOffset(window.scrollY);
 
-    if (top < minTopValue) shouldUnmount();
+    if (top < minTopValue) {
+      shouldUnmount();
+    }
 
     document.addEventListener('scroll', handleScroll, { passive: true });
 
