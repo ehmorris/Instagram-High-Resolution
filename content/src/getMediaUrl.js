@@ -33,11 +33,31 @@ const pickBiggestSourceFromSrcset = ({ srcset, src }) => {
 
 const pickFirstSourceElement = sources => Promise.resolve(sources[0].src);
 
+const mediaIsVideoBlob = media =>
+  (media.src || media.currentSrc).slice(0, 5) === 'blob:';
+
+const injectScript = () => {
+  const injectedScriptElement = document.createElement('script');
+  injectedScriptElement.src = chrome.runtime.getURL('injected_script.js');
+  document.documentElement.appendChild(injectedScriptElement);
+};
+
 export const getMediaUrl = media => {
   if (media.srcset) {
     return pickBiggestSourceFromSrcset(media);
   } else if (media.childElementCount) {
     return pickFirstSourceElement(media.children);
+  } else if (mediaIsVideoBlob(media)) {
+    const injectionScriptChannel = new BroadcastChannel(
+      'HRDFI_extension_script_communication_channel'
+    );
+
+    return new Promise(resolve => {
+      injectionScriptChannel.onmessage = ({ data: { video_url } }) =>
+        resolve(video_url);
+
+      injectScript();
+    });
   } else {
     return Promise.resolve(media.src || media.currentSrc);
   }
