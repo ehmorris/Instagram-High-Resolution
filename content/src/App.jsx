@@ -34,8 +34,12 @@ function App() {
       getMediaUrl(mediaObject.mediaElement).then(
         mediaUrl => {
           window.clearTimeout(loaderTimeout);
-          setMediaUrl(mediaUrl);
-          setFetchingMediaUrl(false);
+          if (mediaUrl === 'empty') {
+            resetApp();
+          } else {
+            setMediaUrl(mediaUrl);
+            setFetchingMediaUrl(false);
+          }
         },
         () => {
           window.clearTimeout(loaderTimeout);

@@ -36,6 +36,8 @@ const pickFirstSourceElement = sources => Promise.resolve(sources[0].src);
 const mediaIsVideoBlob = media =>
   (media.src || media.currentSrc).slice(0, 5) === 'blob:';
 
+const onPhotoPage = () => window.location.pathname.slice(0, 3) === '/p/';
+
 const injectScript = () => {
   const injectedScriptElement = document.createElement('script');
   injectedScriptElement.src = chrome.runtime.getURL('injected_script.js');
@@ -48,16 +50,22 @@ export const getMediaUrl = media => {
   } else if (media.childElementCount) {
     return pickFirstSourceElement(media.children);
   } else if (mediaIsVideoBlob(media)) {
-    const injectionScriptChannel = new BroadcastChannel(
-      'HRDFI_extension_script_communication_channel'
-    );
+    // Unclear how to get the video url when the video appears in the feed or a
+    // modal. Returning an empty string in those cases and handling that in App.jsx
+    if (onPhotoPage()) {
+      const injectionScriptChannel = new BroadcastChannel(
+        'HRDFI_extension_script_communication_channel'
+      );
 
-    return new Promise(resolve => {
-      injectionScriptChannel.onmessage = ({ data: { video_url } }) =>
-        resolve(video_url);
+      return new Promise(resolve => {
+        injectionScriptChannel.onmessage = ({ data: { video_url } }) =>
+          resolve(video_url);
 
-      injectScript();
-    });
+        injectScript();
+      });
+    } else {
+      return Promise.resolve('empty');
+    }
   } else {
     return Promise.resolve(media.src || media.currentSrc);
   }
