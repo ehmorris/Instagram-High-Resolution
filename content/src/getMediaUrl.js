@@ -58,10 +58,9 @@ export const getMediaUrl = media => {
   } else if (media.childElementCount) {
     return pickFirstSourceElement(media.children);
   } else if (mediaIsVideoBlob(media)) {
-    const id = getIGID();
-    return getGraphQLResponse(id).then(
-      response => jsonPath(response, '$..video_url')[0]
-    );
+    return getGraphQLResponse(getIGID()).then(response => {
+      return jsonPath.query(response, '$..video_url')[0];
+    });
   } else {
     return Promise.resolve(media.src || media.currentSrc);
   }
