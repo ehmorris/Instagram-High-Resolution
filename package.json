@@ -5,6 +5,7 @@
   "description": "",
   "dependencies": {
     "copy-webpack-plugin": "^4.6.0",
+    "jsonpath": "^1.0.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-frame-component": "^4.0.2",
@@ -18,9 +19,9 @@
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-util": "^3.0.7",
+    "prettier": "^1.18.2",
     "rimraf": "^2.5.0",
-    "webpack": "^2.6.0",
-    "prettier": "^1.18.2"
+    "webpack": "^2.6.0"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,json}\"",

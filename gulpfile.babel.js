@@ -21,10 +21,6 @@ gulp.task('copy-manifest', ['clean'], () => {
   return gulp.src('manifest.json').pipe(gulp.dest('./build'));
 });
 
-gulp.task('copy-injected-script', ['clean'], () => {
-  return gulp.src('injected_script.js').pipe(gulp.dest('./build'));
-});
-
 gulp.task('copy-locales', ['clean'], function() {
   return gulp
     .src(['./_locales/**/*'], {
@@ -37,12 +33,7 @@ gulp.task('clean', cb => {
   rimraf('./build', cb);
 });
 
-gulp.task('build', [
-  'copy-manifest',
-  'copy-injected-script',
-  'copy-locales',
-  'content-js',
-]);
+gulp.task('build', ['copy-manifest', 'copy-locales', 'content-js']);
 
 gulp.task('watch', ['default'], () => {
   gulp.watch('content/**/*', ['build']);

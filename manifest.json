@@ -15,6 +15,5 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": ["clipboardWrite"],
-  "web_accessible_resources": ["injected_script.js"]
+  "permissions": ["clipboardWrite"]
 }
